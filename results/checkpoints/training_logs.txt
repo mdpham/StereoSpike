@@ -1,0 +1,29 @@
+
+    MODEL
+    ------------------------------
+    StereoSpike
+
+    DATA
+    ------------------------------
+    nfpdm = 1
+    N_train = 1
+    training_set = 3110
+    test_set = 200
+    learned_metric = LIN
+    data_augmentation = Compose(
+    ToTensor()
+)
+
+    SHUFFLED TRAINING PROCEDURE
+    ------------------------------
+    batchsize = 1
+    lr = 0.0002
+    wd = 0.0
+    Epoch: 0, Training Loss: 3.809084382816143, Training Mean Depth Error (m): 1.3610775470733643, Time: 23412.662667036057
+Epoch: 0, Test Loss: 2.193985568881035, Test Mean Depth Error (m): 0.43544328212738037, Time: 337.2946066856384
+Best performances so far: saving model...
+Epoch: 1, Training Loss: 1.598252396338239, Training Mean Depth Error (m): 0.3986445963382721, Time: 23321.490051031113
+Epoch: 1, Test Loss: 1.6472318702936173, Test Mean Depth Error (m): 0.31235265731811523, Time: 337.01264786720276
+Best performances so far: saving model...
+Epoch: 2, Training Loss: 1.3129526452236238, Training Mean Depth Error (m): 0.3325917422771454, Time: 23281.26914191246
+Epoch: 2, Test Loss: 1.5801443612575532, Test Mean Depth Error (m): 0.3180493712425232, Time: 339.96663784980774

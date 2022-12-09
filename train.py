@@ -17,7 +17,7 @@ from datasets.data_augmentation import ToTensor, RandomHorizontalFlip, RandomVer
     RandomEventDrop
 
 from network.SNN_models import StereoSpike, fromZero_feedforward_multiscale_tempo_Matt_SpikeFlowNetLike
-from network.ANN_models import StereoSpike_equivalentANN
+# from network.ANN_models import StereoSpike_equivalentANN
 
 from network.metrics import MeanDepthError, log_to_lin_depths, disparity_to_depth
 from network.loss import Total_Loss
@@ -30,7 +30,7 @@ from viz import show_learning
 ##############################
 
 device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
-
+print('device', device)
 
 def set_random_seed(seed):
     # Python
@@ -102,7 +102,7 @@ train_data_loader = torch.utils.data.DataLoader(dataset=train_set,
 val_data_loader = torch.utils.data.DataLoader(dataset=val_set,
                                               batch_size=1,
                                               shuffle=False,
-                                              drop_last=True
+                                              drop_last=True,
                                               pin_memory=True)
 
 test_data_loader = torch.utils.data.DataLoader(dataset=test_set,

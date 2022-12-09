@@ -15,7 +15,7 @@ from datasets.data_augmentation import ToTensor, RandomHorizontalFlip, RandomVer
     RandomEventDrop
 
 from network.SNN_models import StereoSpike
-from network.ANN_models import SteroSpike_equivalentANN
+# from network.ANN_models import SteroSpike_equivalentANN
 
 from viz import show_learning
 
@@ -145,5 +145,6 @@ for key in firing_rates_dict:
 
 # output mean firing rates
 print(firing_rates_dict)
+import json
 logfile.write(firing_rates_dict)
 logfile.close()

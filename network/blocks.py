@@ -132,6 +132,8 @@ class NNConvUpsampling(nn.Module):
         return out
 
 
+
+# possible neuron types: parametricLIF, quadraticLIF, 
 class SEWResBlock(nn.Module):
     """
     Spike-Element-Wise (SEW) residual block as it is described in the paper "Spike-based residual blocks".
@@ -139,7 +141,8 @@ class SEWResBlock(nn.Module):
     """
 
     def __init__(self, in_channels: int, connect_function='ADD', v_threshold=1., v_reset=0.,
-                 surrogate_function=surrogate.Sigmoid(), use_plif=False, tau=2.,  multiply_factor=1.):
+                 surrogate_function=surrogate.Sigmoid(), use_plif=False, tau=2.,  multiply_factor=1.,
+                 neuron_type='EIF'):
         super(SEWResBlock, self).__init__()
 
         self.conv1 = nn.Sequential(
@@ -147,14 +150,32 @@ class SEWResBlock(nn.Module):
             MultiplyBy(multiply_factor),
         )
 
-        self.sn1 = neuron.ParametricLIFNode(init_tau=tau, v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True) if use_plif else neuron.IFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        if neuron_type == 'pLIF':
+            self.sn1 = neuron.ParametricLIFNode(init_tau=tau, v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        elif neuron_type == 'IF':
+            self.sn1 = neuron.IFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        elif neuron_type == 'QIF':
+            self.sn1 = neuron.QIFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        elif neuron_type == 'EIF':
+            self.sn1 = neuron.EIFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        else:
+            raise NotImplementedError()
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=(3 - 1) // 2, bias=False),
             MultiplyBy(multiply_factor),
         )
-
-        self.sn2 = neuron.ParametricLIFNode(init_tau=tau, v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True) if use_plif else neuron.IFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        
+        if neuron_type == 'pLIF':
+            self.sn2 = neuron.ParametricLIFNode(init_tau=tau, v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        elif neuron_type == 'IF':
+            self.sn2 = neuron.IFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        elif neuron_type == 'QIF':
+            self.sn2 = neuron.QIFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        elif neuron_type == 'EIF':
+            self.sn2 = neuron.EIFNode(v_threshold=v_threshold, v_reset=v_reset, surrogate_function=surrogate_function, detach_reset=True)
+        else:
+            raise NotImplementedError()
 
         self.connect_function = connect_function
 
